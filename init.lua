@@ -1,7 +1,7 @@
-local utf8, vargs, tern
+local utf8, varargs, tern
 
 utf8  = require("utf8")
-vargs = require("lib.varargs")
+varargs = require("lib.varargs")
 tern  = require("lib.tern")
 
 ---The value of *τ*.
@@ -328,7 +328,7 @@ end
 table.merge = function(...)
     local result = {}
 
-    for _, i in vargs(...) do
+    for _, i in varargs(...) do
         if i ~= nil then
             if type(i) == "table" then
                 for _, j in ipairs(i) do
@@ -777,7 +777,7 @@ end
 string.fformat = function(self, ...)
     local lut = {}
 
-    for i, v in vargs(...) do
+    for i, v in varargs(...) do
         lut[("{%s}"):format(i)] = tostring(v)
     end
 
