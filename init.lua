@@ -1,9 +1,8 @@
-local utf8, vargs
+local utf8, vargs, tern
 
 utf8  = require("utf8")
 vargs = require("lib.vargs")
-
-require("lib.tern")
+tern  = require("lib.tern")
 
 ---The value of *τ*.
 math.tau = math.pi * 2
