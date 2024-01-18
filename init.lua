@@ -123,6 +123,7 @@ os.tz_offset = function(timestamp)
 
 	here.isdst = false --http://lua-users.org/wiki/TimeZone
 
+    ---@diagnostic disable-next-line: param-type-mismatch
 	return os.difftime(os.time(here), os.time(utc)) / 3600
 end
 
