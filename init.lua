@@ -795,7 +795,7 @@ end
 ---@param str string The string you are looking for
 ---@return boolean
 ---@nodiscard
-string.endwith = function(self, str)
+string.endswith = function(self, str)
     return not not self:match(str:gsub("[%^%$%(%)%%%.%[%]%*%+%-%?]", "%%%0") .. "$")
 end
 
