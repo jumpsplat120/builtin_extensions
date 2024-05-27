@@ -819,18 +819,16 @@ end
 ---@return boolean
 ---@nodiscard
 string.endswith = function(self, str)
-    return not not self:match(str:gsub("[%^%$%(%)%%%.%[%]%*%+%-%?]", "%%%0") .. "$")
+    return self:sub(-str:len()) == str
 end
 
----Returns whether a string starts with another string. This will escape
---special characters, so if you want to use an actual pattern, then you
---should use [string.match](command:extension.lua.doc?["en-us/51/manual.html/pdf-string.match"]).
+---Returns whether a string starts with another string.
 ---@param self string The string you are checking against
 ---@param str string The string you are looking for
 ---@return boolean
 ---@nodiscard
 string.startswith = function(self, str)
-    return not not self:match("^" .. str:gsub("[%^%$%(%)%%%.%[%]%*%+%-%?]", "%%%0"))
+    return self:sub(str:len()) == str
 end
 
 ---Takes a string, and pads the front of it with the provided string. Will pad up to the length required,
