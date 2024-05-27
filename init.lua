@@ -515,6 +515,30 @@ table.mdarray = function(self, func, depth)
     return self
 end
 
+--Takes a arbitrarily nested, sequential, numerically indexed table
+--and flattens it into a single table.
+--
+---```lua
+---local a = { "a", "b", { "c", { "foo", "bar", { "fizz", "buzz" } }, "d" } }
+---
+---table.flatten(a)  -- { "a", "b", "c", "foo", "bar", "fizz", "buzz", "d" }
+---```
+---@param self table The table to flatten.
+---@return table #A new table containing the flattened results. The original tables are left unmodified.
+table.flatten = function(self, result)
+    result = result or {}
+    
+    for _, v in ipairs(self) do
+        if type(v) == "table" then
+            result = table.flatten(v, result)
+        else
+            result[#result + 1] = v 
+        end
+    end
+
+    return result
+end
+
 ---Shuffles the items in a sequential, numerically indexed table. Shuffles
 ---in place.
 ---@param self table The table that to shuffle.
