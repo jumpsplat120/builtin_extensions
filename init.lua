@@ -388,6 +388,28 @@ table.filter = function(self, func)
     return result
 end
 
+---Takes a table, and returns a copy of the table with only unique values. Assumes
+---the table is a sequentially ordered table, and uses ipairs internally.
+---@param self table The table to deduplicate.
+---@return table
+---@nodiscard
+table.deduplicate = function(self)
+    local tmp, result
+
+    tmp    = {}
+    result = {}
+
+    for _, v in ipairs(self) do
+        tmp[v] = true
+    end
+    
+    for k, _ in pairs(tmp) do
+        result[#result + 1] = k 
+    end
+
+    return result
+end
+
 ---Return the index of the searched for value, if found. It's assumed that the table
 ---is numerically indexed, and will iterate over the table using ipairs. Sparse tables
 ---or other non traditional tables may not return expected results.
