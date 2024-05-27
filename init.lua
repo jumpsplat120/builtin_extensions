@@ -316,19 +316,45 @@ table.join = function(self, sep, last)
     error("Table value does not implement '__ipairs' or '__pairs'.")
 end
 
----Takes each table or value passed in, and merges them all into a single table. Values other than
----`boolean`, `string` or `number` are passed by reference, and thus will still exist in the
----original table as well. Tables can only have numeric indices, or otherwise be iteratable with
----`ipairs`.
+---Takes each table or value passed in, and merges them all into a single table. Merges table
+---based on key/value pairs, and merges from left to right.
+---```
+---a = { fruit = "apple" }
+---b = { fruit = "bannana", veggie = "carrot" }
+---c = { name = "jumpsplat120" }
 ---
----`nil` parameters will be skipped, to avoid creating a sparse table.
+---d = table.merge(c, b, a)
+---
+-----tables b and a have been merged into c, so d == c
+-----c => { name = "jumpsplat120", fruit = "apple", veggie = "carrot" }
+---```
+---@param ... any The table or values to be joined together.
+---@return table
+table.merge = function(...)
+    local args, main
+    
+    args = { ... }
+    main = table.remove(args, 1)
+
+    for _, v in ipairs(args) do
+        for k, vv in pairs(v) do
+            main[k] = vv
+        end
+    end
+
+    return main
+end
+
+---Takes each table or value passed in, and merges them all into a single table. Assumes table
+---is sequentially ordered, and merges table such that all of param1 will exist, then all of param2,
+---then all of param3, and so on. Only shallowly copies tables, and uses `ipairs` internally.
 ---@param ... any The table or values to be joined together.
 ---@return table
 ---@nodiscard
-table.merge = function(...)
+table.imerge =  function(...)
     local result = {}
 
-    for _, i in varargs(...) do
+    for _, i in ipairs({...}) do
         if i ~= nil then
             if type(i) == "table" then
                 for _, j in ipairs(i) do
