@@ -369,6 +369,25 @@ table.imerge =  function(...)
     return result
 end
 
+---Takes a table, then iterates through each item in the table, passing it through the
+---provided function. If the function returns `true`, then the value is kept in the new
+---table.
+---@param self table The table to iterate through.
+---@param func fun(i:number, value:any):boolean The function used to filter the table.
+---@return table
+---@nodiscard
+table.filter = function(self, func)
+    local result = {}
+
+    for i, v in ipairs(self) do
+        if func(i, v) then
+            result[#result + 1] = v
+        end
+    end
+    
+    return result
+end
+
 ---Return the index of the searched for value, if found. It's assumed that the table
 ---is numerically indexed, and will iterate over the table using ipairs. Sparse tables
 ---or other non traditional tables may not return expected results.
