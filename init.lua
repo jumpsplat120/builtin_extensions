@@ -792,10 +792,11 @@ string.before = function(self, separator, plain)
     if plain == nil then plain = true end
 
     local start, fin = self:find(separator, 1, plain)
+    
+    if fin - separator:len() == 0 then return ""   end
+    if not start                  then return self end
 
-    if not start then return self end
-
-    return self:sub(1, fin - 1)
+    return self:sub(1, fin - separator:len())
 end
 
 ---Return a string in Titlecase Format. That means the first letter of anything after a space is uppercased.
