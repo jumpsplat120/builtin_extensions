@@ -188,7 +188,7 @@ table.entries = function(self)
     return result
 end
 
----Create a table that *only* contains values that exist in all tables. Comparision is
+---Create a table that only contains values that exist in *all* tables. Comparision is
 ---done with a simple `==`, so values that are passed by reference will only be in the
 ---result if they are the same item in memory. It is assumed that the table is a non-
 ---sparse, numerically indexed table, and may result in unexpected output if the input
