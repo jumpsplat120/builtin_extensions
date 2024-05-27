@@ -828,7 +828,7 @@ end
 ---@return boolean
 ---@nodiscard
 string.startswith = function(self, str)
-    return self:sub(str:len()) == str
+    return self:sub(1, str:len()) == str
 end
 
 ---Takes a string, and pads the front of it with the provided string. Will pad up to the length required,
