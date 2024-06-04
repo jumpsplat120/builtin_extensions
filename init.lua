@@ -108,7 +108,7 @@ end
 ---@return number
 ---@nodiscard
 math.cycle = function(value, from, to)
-    if math.clamp(value, from, to) == value then return value end
+    if math.between(value, from, to) then return value end
 
     local dt, res
 
