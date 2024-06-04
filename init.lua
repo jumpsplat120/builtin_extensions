@@ -48,6 +48,16 @@ math.clamp = function(value, min, max)
     return value
 end
 
+---Returns whether a number is between the `min` and `max`, equivalent to `min <= value and value <= max`.
+---@param value number The number you'd like to check.
+---@param min number The lower bound of the range.
+---@param max number The upper bound of the range.
+---@return boolean
+---@nodiscard
+math.between = function(value, min, max)
+    return min <= value and value <= max
+end
+
 ---Linearly interpolate a number towards another number by some percentage.
 ---This functions similiarly to lerping a vector, but in 1D space rather than
 ---2D or higher. A `percent` value above 1 or below 0 will extrapolate beyond
