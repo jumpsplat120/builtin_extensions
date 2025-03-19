@@ -693,14 +693,14 @@ table.equals = function(...)
     local first, args, len
 
     args  = { ... }
-    len   = #args
     first = table.remove(args, 1)
+    len   = #first
 
     for _, v in ipairs(args) do
         if len ~= #v then return false end
 
-        for ii, vv in ipairs(first) do
-            if v[ii] ~= vv then return false end
+        for ii, vv in ipairs(v) do
+            if first[ii] ~= vv then return false end
         end
     end
 
