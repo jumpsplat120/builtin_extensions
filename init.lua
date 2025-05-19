@@ -157,7 +157,7 @@ end
 
 ---Reverse the entries of a table **in place**.
 ---@param self table The table to be reversed.
----@return table #A reference to the *new*, reversed table.
+---@return table #A reference to the reversed table.
 table.reverse = function(self)
     local n = #self
 
