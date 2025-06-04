@@ -749,7 +749,7 @@ string.split = function(self, separator, plain, keep)
     plain  = plain == nil or plain
     keep   = not not tern(keep == nil, false, keep) and 0 or 1
     
-    if separator == nil then
+    if separator == nil or separator == "" then
         for i, chr in self do result[i] = chr end
 
         return result
