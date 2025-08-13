@@ -803,8 +803,8 @@ string.before = function(self, separator, plain)
 
     local start, fin = self:find(separator, 1, plain)
     
-    if fin - separator:len() == 0 then return ""   end
     if not start                  then return self end
+    if fin - separator:len() == 0 then return ""   end
 
     return self:sub(1, fin - separator:len())
 end
