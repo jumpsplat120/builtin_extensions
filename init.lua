@@ -471,9 +471,9 @@ table.foreach = function(self, func)
 
         self[i] = nil
 
-        if a and b == nil then self[a] = v end
-        if a == nil and b then self[i] = b end
-        if a and b        then self[a] = b end
+        if a ~= nil and b == nil then self[a] = v end
+        if a == nil and b ~= nil then self[i] = b end
+        if a ~= nil and b ~= nil then self[a] = b end
     end
     
     return self
