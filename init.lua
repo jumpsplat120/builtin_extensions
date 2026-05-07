@@ -18,6 +18,15 @@ math.uuid = function()
     return result
 end
 
+---Returns the cube root of x.
+---@param x number
+---@return number
+math.cbrt = function(x)
+    assert(type(x) == "number", debug.traceback("bad argument #1 to 'sqrt' (number expected, got " .. type(x) .. ")"))
+    
+    return x ^ (1 / 3)
+end
+
 ---Take number, and assuming it's placement in a range from `from_min` to `from_max`, map that
 ---number if it instead were in the range `to_min` to `to_max`. For example, a number that is
 ---half way between `from_min` and `from_max` should be half way between `to_min` and `to_max`.
