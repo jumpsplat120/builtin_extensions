@@ -164,7 +164,7 @@ table.unpack = function(self, i, j)
     return unpack(self, i, j)
 end
 
----Reverse the entries of a table **in place**.
+---Reverse the entries of a table **in place**, and returns a reference to itself.
 ---@param self table The table to be reversed.
 ---@return table #A reference to the reversed table.
 table.reverse = function(self)
