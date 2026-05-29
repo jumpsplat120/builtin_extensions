@@ -89,14 +89,22 @@ end
 ---    print(math.round(173.2562, 2))  --173.26
 ---    print(math.round(173.2562, -1)) --170
 ---```
----@param value number The number you'd like to round (0 by default).
+---@param x number The number you'd like to round (0 by default).
 ---@param sigfig? number The amount of significant figures you'd like to round to. A whole number is usually used, but is not required.
 ---@return number
 ---@nodiscard
-math.round = function(value, sigfig)
+math.round = function(x, sigfig)
     local mult = 10 ^ (sigfig or 0)
 
-    return math.floor(value * mult + 0.5) / mult
+    return math.floor(x * mult + 0.5) / mult
+end
+
+---Returns "integer" if x is an integer, "float" if it is a float, or fail if x is not a number. 
+---@param x number
+math.type = function(x)
+    if tonumber(x) ~= x then return nil end
+    
+    return math.floor(x) == x and "integer" or "float"
 end
 
 ---Taking a value, cycle between the provided range. For example, if `from` is 6
@@ -534,24 +542,65 @@ table.mdarray = function(self, func, depth)
     return self
 end
 
---Takes a arbitrarily nested, sequential, numerically indexed table
---and flattens it into a single table.
+--Takes a arbitrarily nested, sequential, numerically indexed table and flattens it into a single table.
 --
 ---```lua
 ---local a = { "a", "b", { "c", { "foo", "bar", { "fizz", "buzz" } }, "d" } }
 ---
----table.flatten(a)  -- { "a", "b", "c", "foo", "bar", "fizz", "buzz", "d" }
+---table.iflatten(a)  -- { "a", "b", "c", "foo", "bar", "fizz", "buzz", "d" }
 ---```
 ---@param self table The table to flatten.
 ---@return table #A new table containing the flattened results. The original tables are left unmodified.
-table.flatten = function(self, result)
+table.iflatten = function(self, result)
     result = result or {}
     
     for _, v in ipairs(self) do
         if type(v) == "table" then
-            result = table.flatten(v, result)
+            result = table.iflatten(v, result)
         else
-            result[#result + 1] = v 
+            table.insert(result, v)
+        end
+    end
+
+    return result
+end
+
+---Takes a table with key/value pairs, and flatten it, using keys that are period seperated.
+---Non string keys are `tostring`ed, and ignores circular references.
+---@param self table
+---@param prefix string? Used internally for recursion.
+---@param circular table? Used internally for recursion.
+---@param result table? Used internally for recursion.
+---@return table
+table.flatten = function(self, prefix, circular, result)
+    if not result then
+        return table.flatten(self, nil, { [self] = true }, {})
+    end
+    
+    for k, v in pairs(self) do
+        if type(k) ~= "string" then
+            k = tostring(k)
+        end
+
+        if prefix then
+            k = prefix .. "." .. k
+        end
+
+        if type(v) == "table" then
+            --Recursively flattten, unless the value is a circular reference.
+            if not circular[v] then
+                if next(v) then
+                    circular[v] = true
+
+                    table.flatten(v, k, circular, result)
+
+                    circular[v] = nil
+                else
+                    result[k] = v
+                end
+            end
+        else
+            result[k] = v
         end
     end
 
