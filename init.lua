@@ -951,6 +951,17 @@ local function char_iterator(self, index)
     return index, utf8.char(utf8.codepoint(self, utf8.offset(self, index)))
 end
 
+---Returns an iterator function that, each time it is called, returns a new line from the string.
+---@param self string
+---@return fun(): any
+string.lines = function(self)
+    return coroutine.wrap(function()
+        for i, v in ipairs(self:split("\n")) do
+            coroutine.yield(v)
+        end
+    end)
+end
+
 debug.setmetatable("", {
     __call = function(self, ...)
         local value = select(2, ...)
