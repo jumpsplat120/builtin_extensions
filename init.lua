@@ -209,7 +209,7 @@ table.entries = function(self)
     local result = {}
 
     for k, v in pairs(self) do
-        result[#result + 1] = { k, v }
+        table.insert(result, { k, v })
     end
 
     return result
@@ -224,10 +224,10 @@ end
 ---@return table
 ---@nodiscard
 table.set = function(...)
-    local tmp, output
+    local tmp, result
 
-    output = {}
     tmp    = {}
+    result = {}
 
     for _, tbl in ipairs{ ... } do
         for _, val in ipairs(tbl) do
@@ -238,7 +238,9 @@ table.set = function(...)
     end
 
     for k, v in pairs(tmp) do
-        if v > 1 then output[#output + 1] = k end 
+        if v > 1 then
+            table.insert(result, k)
+        end 
     end
 
     return output
@@ -255,7 +257,7 @@ table.values = function(self)
     local result = {}
 
     for _, v in pairs(self) do
-        result[#result + 1] = v
+        table.insert(result, v)
     end
 
     return result
@@ -272,7 +274,7 @@ table.keys = function(self)
     local result = {}
 
     for k, _ in pairs(self) do
-        result[#result + 1] = k
+        table.insert(result, k)
     end
 
     return result
@@ -385,10 +387,10 @@ table.imerge =  function(...)
         if i ~= nil then
             if type(i) == "table" then
                 for _, j in ipairs(i) do
-                    result[#result + 1] = j
+                    table.insert(result, j)
                 end
             else
-                result[#result + 1] = i
+                table.insert(result, i)
             end
         end
     end
@@ -408,7 +410,7 @@ table.filter = function(self, func)
 
     for i, v in ipairs(self) do
         if func(i, v) then
-            result[#result + 1] = v
+            table.insert(result, v)
         end
     end
     
@@ -431,7 +433,7 @@ table.deduplicate = function(self)
     end
     
     for k, _ in pairs(tmp) do
-        result[#result + 1] = k 
+        table.insert(result, k)
     end
 
     return result
@@ -445,7 +447,11 @@ end
 ---@return number?
 ---@nodiscard
 table.find = function(self, search)
-    for i, v in ipairs(self) do if v == search then return i end end
+    for i, v in ipairs(self) do
+        if v == search then
+            return i
+        end
+    end
 end
 
 ---Iterate over each value inside a table, and applies the function to
@@ -457,7 +463,9 @@ end
 table.map = function(self, func)
     local clone = {}
 
-    for k, v in pairs(self) do clone[k] = v end
+    for k, v in pairs(self) do
+        clone[k] = v
+    end
 
     for k, v in pairs(clone) do
         local a, b = func(k, v)
@@ -481,7 +489,9 @@ end
 table.foreach = function(self, func)
     local clone = {}
 
-    for i, v in ipairs(self) do clone[i] = v end
+    for i, v in ipairs(self) do
+        clone[i] = v
+    end
 
     for i, v in ipairs(clone) do
         local a, b = func(i, v)
@@ -615,7 +625,7 @@ table.shuffle = function(self)
     local result = {}
 
     for _ = 1, table.maxn(self), 1 do
-        result[#result + 1] = table.remove(self, math.random(table.maxn(self)))
+        table.insert(result, table.remove(self, math.random(table.maxn(self))))
     end
 
     for i, v in ipairs(result) do self[i] = v end
@@ -786,7 +796,7 @@ table.subset = function(self, i, j)
     j = j or 0
 
     for a = i, j <= 0 and #self + j or j, 1 do
-        result[#result + 1] = self[a]
+        table.insert(result, self[a])
     end
 
     return result
@@ -818,13 +828,13 @@ string.split = function(self, separator, plain, keep)
         
         if not start then
             if index <= #self then
-                result[#result + 1] = self:sub(index)
+                table.insert(result, self:sub(index))
             end
 
             break
         end
         
-        result[#result + 1] = self:sub(index, start - keep)
+        table.insert(result, self:sub(index, start - keep))
 
         index = fin + 1
     end
