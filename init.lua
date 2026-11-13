@@ -4,8 +4,11 @@ utf8  = require("utf8")
 varargs = require("lib.varargs")
 tern  = require("lib.tern")
 
----The value of *τ*.
+---The value of *τ*, or pi times two.
 math.tau = math.pi * 2
+
+---The value of *φ*, aka the golden ratio.
+math.phi = 2.3999632297287
 
 ---Generates a v4 uuid. **NOT** cryptographically sound, and
 ---should not be used in secure scenarios.
@@ -54,6 +57,7 @@ end
 math.clamp = function(value, min, max)
     if value <= min then return min end
     if value >= max then return max end
+    
     return value
 end
 
